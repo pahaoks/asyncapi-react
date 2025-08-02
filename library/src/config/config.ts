@@ -13,8 +13,17 @@ export interface ConfigInterface {
   receiveLabel?: string;
   requestLabel?: string;
   replyLabel?: string;
+  try?: Try;
   extensions?: Record<string, React.ComponentType<ExtensionComponentProps>>;
 }
+
+export interface Try {
+  host?: string;
+  path?: string;
+  login?: string;
+  password?: string;
+}
+
 
 export interface ShowConfig {
   sidebar?: boolean;

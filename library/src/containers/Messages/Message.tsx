@@ -20,6 +20,7 @@ import {
 
 interface Props {
   message: MessageInterface;
+  channelName: string;
   messageName?: string;
   index?: number | string;
   showExamples?: boolean;
@@ -28,6 +29,7 @@ interface Props {
 export const Message: React.FunctionComponent<Props> = ({
   message,
   messageName,
+  channelName,
   index,
   showExamples = false,
 }) => {
@@ -173,7 +175,7 @@ export const Message: React.FunctionComponent<Props> = ({
 
       {showExamples && (
         <div className="panel-item--right px-8">
-          <MessageExample message={message} />
+          <MessageExample channelName={channelName} message={message} />
         </div>
       )}
     </div>
