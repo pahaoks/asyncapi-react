@@ -22,8 +22,17 @@ export interface Try {
   path?: string;
   login?: string;
   password?: string;
+  onSend?: (message: TryMessage) => Promise<void>;
 }
 
+export interface TryMessage {
+  routingKey?: string;
+  headers?: any;
+  payload: any;
+  login?: string;
+  password?: string;
+  url?: string;
+}
 
 export interface ShowConfig {
   sidebar?: boolean;
