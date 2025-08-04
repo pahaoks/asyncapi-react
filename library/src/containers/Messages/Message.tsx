@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageInterface } from '@asyncapi/parser';
+import { MessageInterface, OperationInterface } from '@asyncapi/parser';
 
 import { MessageExample } from './MessageExample';
 import {
@@ -20,7 +20,7 @@ import {
 
 interface Props {
   message: MessageInterface;
-  channelName: string;
+  operation?: OperationInterface;
   messageName?: string;
   index?: number | string;
   showExamples?: boolean;
@@ -29,7 +29,7 @@ interface Props {
 export const Message: React.FunctionComponent<Props> = ({
   message,
   messageName,
-  channelName,
+  operation,
   index,
   showExamples = false,
 }) => {
@@ -175,7 +175,7 @@ export const Message: React.FunctionComponent<Props> = ({
 
       {showExamples && (
         <div className="panel-item--right px-8">
-          <MessageExample channelName={channelName} message={message} />
+          <MessageExample operation={operation} message={message} />
         </div>
       )}
     </div>

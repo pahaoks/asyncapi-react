@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageInterface, SchemaInterface } from '@asyncapi/parser';
+import { MessageInterface, OperationInterface, SchemaInterface } from '@asyncapi/parser';
 
 import { CollapseButton, JSONSnippet } from '../../components';
 import { MessageHelpers } from '../../helpers/message';
@@ -9,10 +9,10 @@ import { Try } from './Try';
 
 interface Props {
   message: MessageInterface;
-  channelName: string;
+  operation?: OperationInterface;
 }
 
-export const MessageExample: React.FunctionComponent<Props> = ({ message, channelName }) => {
+export const MessageExample: React.FunctionComponent<Props> = ({ message, operation }) => {
   if (!message) {
     return null;
   }
@@ -40,7 +40,7 @@ export const MessageExample: React.FunctionComponent<Props> = ({ message, channe
       {payload && (
         <Try
             type="Try"
-            channelName={channelName}
+            operation={operation}
             schemaMessage={payload}
             schemaHeaders={headers}
             examples={MessageHelpers.getPayloadExamples(message)}

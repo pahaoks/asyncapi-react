@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SchemaInterface } from '@asyncapi/parser';
+import { SchemaInterface, OperationInterface } from '@asyncapi/parser';
 
 import { CollapseButton } from '../../components';
 import { MessageHelpers } from '../../helpers/message';
@@ -9,7 +9,7 @@ import { TryMessage } from '../../config';
 
 interface TryProps {
   type: 'Try';
-  channelName: string;
+  operation?: OperationInterface;
   schemaMessage: SchemaInterface;
   schemaHeaders?: SchemaInterface;
   examples?: MessageExampleType[];
@@ -18,7 +18,7 @@ interface TryProps {
 
 export const Try: React.FunctionComponent<TryProps> = ({
   type = 'Try',
-  channelName,
+  operation,
   schemaMessage,
   schemaHeaders,
   examples = [],
@@ -28,6 +28,11 @@ export const Try: React.FunctionComponent<TryProps> = ({
   const [expanded, setExpanded] = useState(
     config?.expand?.messageExamples ?? false,
   );
+
+  const channels = operation?.channels()?.all() || [];
+  const channel = channels.length > 0 ? channels[0] : undefined;
+  const routingKey = channel?.address() ?? '';
+  const tags = (operation?.tags()?.all() || []).map((tag) => tag.name());
 
   useEffect(() => {
     setExpanded(config?.expand?.messageExamples ?? false);
@@ -65,9 +70,10 @@ export const Try: React.FunctionComponent<TryProps> = ({
                   </p>
                 )}
                 <TryForm 
-                  routingKey={channelName}
+                  routingKey={routingKey}
                   header={JSON.stringify(headers && headers?.length > 0 ? headers[0].example : {}, null, 2)} 
                   example={JSON.stringify(example, null, 2)} 
+                  tags={tags}
                 />
               </li>
             ))}
@@ -75,9 +81,10 @@ export const Try: React.FunctionComponent<TryProps> = ({
         ) : (
           <div className="mt-4">
             <TryForm 
-              routingKey={channelName}
+              routingKey={routingKey}
               header={schemaHeaders ? JSON.stringify(MessageHelpers.generateExample(schemaHeaders.json()), null, 2) : '{}'} 
               example={JSON.stringify(MessageHelpers.generateExample(schemaMessage.json()), null, 2)} 
+              tags={tags}
             />
             <h6 className="text-xs font-bold text-gray-600 italic mt-2">
               This example has been generated automatically.
@@ -93,9 +100,15 @@ interface TryFormProps {
   header: string;
   example: string;
   routingKey: string;
+  tags?: string[];
 }
 
-export const TryForm: React.FunctionComponent<TryFormProps> = ({ header, example, routingKey }) => {
+export const TryForm: React.FunctionComponent<TryFormProps> = ({ 
+  header, 
+  example, 
+  routingKey,
+  tags = [],
+}) => {
   const headerObj = JSON.parse(header || '{}');
   const exampleObj = JSON.parse(example || '{}');
   const obj = {
@@ -178,11 +191,15 @@ export const TryForm: React.FunctionComponent<TryFormProps> = ({ header, example
               login: state.login,
               password: state.password,
               url: state.url,
+              tags: tags
             }
 
             if (config?.try?.onSend) {
               await config.try.onSend(message);
               return;
+            } else {
+              alert('No onSend function defined in the configuration. Message: ' + 
+                JSON.stringify(message, null, 2));
             }
           } catch (e: any) {
             alert(e.message || 'An error occurred while sending the message.');

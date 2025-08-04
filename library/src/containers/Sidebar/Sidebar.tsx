@@ -278,6 +278,8 @@ const OperationsList: React.FunctionComponent = () => {
     },
   );
 
+  processedOperations.sort((a, b) => a.data.label.localeCompare(b.data.label));
+
   if (showOperations === 'byDefault') {
     return (
       <ul className="text-sm mt-2">
@@ -308,6 +310,7 @@ const OperationsList: React.FunctionComponent = () => {
     operationTagNames,
     processedOperations,
   );
+
   return (
     <ul className="text-sm mt-2">
       {Array.from(tagged.entries()).map(([tag, taggedOperations]) => (

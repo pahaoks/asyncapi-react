@@ -32,6 +32,7 @@ export interface TryMessage {
   login?: string;
   password?: string;
   url?: string;
+  tags?: string[];
 }
 
 export interface ShowConfig {

@@ -32,7 +32,6 @@ export const Messages: React.FunctionComponent = () => {
             id={CommonHelpers.getIdentifier(`message-${message.id()}`, config)}
           >
             <Message
-              channelName='none'
               messageName={message.id()}
               message={message}
               index={idx + 1}

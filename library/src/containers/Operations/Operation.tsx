@@ -141,7 +141,7 @@ export const Operation: React.FunctionComponent<Props> = (props) => {
                 .all()
                 .map((msg, idx) => (
                   <li className="mt-4" key={msg.id()}>
-                    <Message channelName={channelName} message={msg} index={idx} showExamples />
+                    <Message operation={operation} message={msg} index={idx} showExamples />
                   </li>
                 ))}
             </ul>
@@ -150,7 +150,7 @@ export const Operation: React.FunctionComponent<Props> = (props) => {
           <div className="mt-2">
             <p className="px-8">Accepts the following message:</p>
             <div className="mt-2">
-              <Message channelName={channelName} message={operation.messages().all()[0]} showExamples />
+              <Message operation={operation} message={operation.messages().all()[0]} showExamples />
             </div>
           </div>
         )}
@@ -337,7 +337,7 @@ export const OperationReplyInfo: React.FunctionComponent<Props> = (props) => {
                       <ul>
                         {replyMessages.all().map((msg, idx) => (
                           <li className="mt-4" key={msg.id()}>
-                            <Message channelName='none' message={msg} index={idx} showExamples />
+                            <Message message={msg} index={idx} showExamples />
                           </li>
                         ))}
                       </ul>
@@ -346,7 +346,6 @@ export const OperationReplyInfo: React.FunctionComponent<Props> = (props) => {
                     <div className="mt-2">
                       <div className="mt-2">
                         <Message
-                          channelName='none'
                           message={replyMessages.all()[0]}
                           showExamples
                         />
@@ -429,7 +428,7 @@ export const OperationReplyChannelInfo: React.FunctionComponent<Props> = ({
               .all()
               .map((msg, idx) => (
                 <li className="mt-4" key={msg.id()}>
-                  <Message channelName={channelName} message={msg} index={idx} showExamples />
+                  <Message operation={operation} message={msg} index={idx} showExamples />
                 </li>
               ))}
           </ul>
@@ -438,7 +437,7 @@ export const OperationReplyChannelInfo: React.FunctionComponent<Props> = ({
         <div className="mt-2">
           <span className="text-xs text-gray-700">Message:</span>
           <div className="mt-2">
-            <Message channelName={channelName} message={channel.messages().all()[0]} showExamples />
+            <Message operation={operation} message={channel.messages().all()[0]} showExamples />
           </div>
         </div>
       )}
